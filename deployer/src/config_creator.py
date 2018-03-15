@@ -22,6 +22,17 @@ def to_docusaurus_config(config):
 
     return config
 
+def to_gitbook_config(config):
+
+    config["selectors"]["lvl0"]=".markdown-section h1"
+    config["selectors"]["lvl1"]=".markdown-section h2"
+    config["selectors"]["lvl2"]=".markdown-section h3"
+    config["selectors"]["lvl3"]=".markdown-section h4"
+    config["selectors"]["lvl4"]=".markdown-section h4"
+    config["selectors"]["text"]=".markdown-section p, .markdown-section li"
+
+    return config
+
 def create_config( u = None):
     config = OrderedDict((
         ("index_name", ""),
@@ -50,6 +61,8 @@ def create_config( u = None):
 
         if helpdesk_helper.is_docusaurus_conversation(conversation):
             config = to_docusaurus_config(config)
+        elif helpdesk_helper.is_gitbook_conversation(conversation):
+            config = to_gitbook_config(config)
 
         config["conversation_id"] = [cuid]
 
