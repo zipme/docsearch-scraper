@@ -132,6 +132,10 @@ def is_gitbook_conversation(conversation):
 
     return "gitbook" in conversation.get("tags")
 
+def is_pkgdown_conversation(conversation):
+
+    return "pkgdown" in conversation.get("tags")
+
 @rate_limited(200,60)
 def search(query, page=1, pageSize=50, sortField="modifiedAt", sortOrder="asc"):
 
