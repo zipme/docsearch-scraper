@@ -1,6 +1,7 @@
 from ..helpers import confirm
 import json
 import copy
+from collections import OrderedDict
 
 
 class NbHitsUpdater(object):
@@ -31,5 +32,40 @@ class NbHitsUpdater(object):
 
     def _update_config(self):
         self.config_content['nb_hits'] = self.new_nb_hit
+        self.config_content = OrderedDict(
+            sorted(self.config_content.items(), key=self.key_sort))
+
         with open(self.config_file, 'w') as f:
             f.write(json.dumps(self.config_content, indent=2, separators=(',', ': ')))
+
+    def key_sort(self, attr):
+        ref = {
+            "index_name": 0,
+            "start_urls": 1,
+            "sitemap_urls": 2,
+            "sitemap_urls_regexs": 3,
+            "stop_urls": 4,
+            "force_sitemap_urls_crawling": 5,
+            "strict_redirects": 6,
+            "selectors": 7,
+            "selectors_exclude": 8,
+            "stop_content": 9,
+            "strip_chars": 10,
+            "keep_tags": 11,
+            "min_indexed_level": 12,
+            "only_content_level": 13,
+            "js_render": 14,
+            "js_wait": 15,
+            "use_anchors": 16,
+            "custom_settings": 17,
+            "synonyms": 18,
+            "docker_memory": 19,
+            "docker_cpu": 20,
+            "conversation_id": 28,
+            "comments": 29,
+            "nb_hits": 30
+        }
+        if attr[0] in ref.keys():
+            return ref[attr[0]]
+        else:
+            return 27
