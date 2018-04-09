@@ -40,14 +40,37 @@ def to_pkgdown_config(config, urls=None):
     if urls:
         start_url = urls[0]
 
-    config["selectors"]["lvl0"] = ".contents h1"
+    config["selectors"]["lvl0"] = OrderedDict((
+            ("selector", ".contents h1"),
+            ("default_value", "Documentation")
+        ))
     config["selectors"]["lvl1"] = ".contents h2"
-    config["selectors"]["lvl2"] = ".contents h3, .contents th, .contents dt"
+    config["selectors"]["lvl2"] = ".contents h3, .contents th"
     config["selectors"]["lvl3"] = ".contents h4"
-    config["selectors"]["lvl4"] = ".contents h4"
+    config["selectors"]["lvl4"] = ".contents h5"
     config["selectors"]["text"] = ".contents p, .contents li, .usage, .template-article .contents .pre"
     config["selectors_exclude"] = [".dont-index"]
-    config["sitemap_urls"] = [start_url+"sitemap.xml"]
+    config["sitemap_urls"] = [start_url + "sitemap.xml"]
+    config["custom_settings"] = {"separatorsToIndex": "_"}
+    # config["stop_urls"] = [start_url + "index.html", "LICENSE-text.html"]
+    config["sitemap_urls"] = [start_url + "sitemap.xml"]
+
+
+    return config
+
+def to_docsify_config(config):
+
+    config["selectors"]["lvl0"] = ".markdown-section h1"
+    config["selectors"]["lvl1"] = ".markdown-section h2"
+    config["selectors"]["lvl2"] = ".markdown-section h3"
+    config["selectors"]["lvl3"] = ".markdown-section h4"
+    config["selectors"]["lvl4"] = ".markdown-section h5"
+    config["use_anchors"] = True
+    config["js_render"] = True
+    config["selectors"]["text"] = ".markdown-section p, .markdown-section li"
+    config["stop_content"] = ["404 - Not found"]
+    config["stop_urls"] = ["\\?id",
+    "\\.\\."]
 
     return config
 
@@ -84,6 +107,8 @@ def create_config(u=None):
             config = to_docusaurus_config(config)
         elif helpdesk_helper.is_gitbook_conversation(conversation):
             config = to_gitbook_config(config)
+        elif helpdesk_helper.is_docsify_conversation(conversation):
+            config = to_docsify_config(config)
         elif helpdesk_helper.is_pkgdown_conversation(conversation):
             config = to_pkgdown_config(config, urls)
 
