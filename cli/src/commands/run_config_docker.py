@@ -28,6 +28,8 @@ class RunConfigDocker(AbstractCommand):
         run_command = [
             'docker',
             'run',
+            '--network',
+            'host',
             '-e',
             'APPLICATION_ID=' + environ.get('APPLICATION_ID'),
             '-e',
