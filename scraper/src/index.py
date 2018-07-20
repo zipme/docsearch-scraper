@@ -11,6 +11,7 @@ from .strategies.default_strategy import DefaultStrategy
 from .custom_downloader_middleware import CustomDownloaderMiddleware
 from .config.browser_handler import BrowserHandler
 from .strategies.algolia_settings import AlgoliaSettings
+from os import environ
 
 try:
     # disable boto (S3 download)
@@ -37,7 +38,8 @@ def run_config(config):
         config.api_key,
         config.index_name,
         AlgoliaSettings.get(config, strategy.levels),
-        config.query_rules
+        config.query_rules,
+        environ.get('REPLACE_DOMAIN', None)
     )
 
     DOWNLOADER_MIDDLEWARES_PATH = 'scraper.src.custom_downloader_middleware.CustomDownloaderMiddleware'
