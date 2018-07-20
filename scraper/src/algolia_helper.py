@@ -33,7 +33,6 @@ class AlgoliaHelper:
             record['url_without_anchor'] = self.update_domain(record['url_without_anchor'], self.replace_domain)
 
         for i in range(0, record_count, 50):
-            print(records[0])
             self.algolia_index_tmp.add_objects(records[i:i + 50])
 
         color="96" if from_sitemap else "94"
