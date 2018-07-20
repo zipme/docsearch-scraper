@@ -3,7 +3,14 @@ import os
 import sys
 import re
 
-conf = os.environ['CONFIG']
+config_arg = os.environ['CONFIG']
+
+if os.path.isfile(config_arg):
+    with open(config_arg, 'r') as f:
+        conf = f.read()
+else:
+  conf = config_arg
+
 config = json.loads(conf)
 
 group_regex = re.compile("\\(\?P<(.+?)>.+?\\)")
